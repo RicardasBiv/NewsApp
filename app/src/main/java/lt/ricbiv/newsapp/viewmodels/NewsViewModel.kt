@@ -15,7 +15,7 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel() {
 
     private val _popularArticles = MutableLiveData<Resource<NewsResponse>>()
-    val popularArticles: LiveData<Resource<NewsResponse>> = _popularArticles
+    val popularArticles: LiveData<Resource<NewsResponse>> get() = _popularArticles
 
     init {
         getPopularArticles()
@@ -25,6 +25,6 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     private fun getPopularArticles() = viewModelScope.launch {
         _popularArticles.postValue(Resource.Loading())
 
-        _popularArticles.postValue(newsRepository.getTopArticles("en"))
+        _popularArticles.postValue(newsRepository.getTopArticles("gb"))
     }
 }

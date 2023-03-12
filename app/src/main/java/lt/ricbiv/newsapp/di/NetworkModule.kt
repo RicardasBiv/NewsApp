@@ -8,6 +8,7 @@ import dagger.hilt.components.SingletonComponent
 import lt.ricbiv.newsapp.BuildConfig
 import lt.ricbiv.newsapp.api.interceptor.ApiKeyInterceptor
 import lt.ricbiv.newsapp.api.services.NewsApiService
+import lt.ricbiv.newsapp.utils.Settings
 import okhttp3.Credentials
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
@@ -23,7 +24,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNewsApi () : NewsApiService{
+    fun provideAuthTokenInterceptor(prefs: SharedPreferences) :ApiKeyInterceptor{
+        val authToken = prefs.getString(Settings.AUTH_TOKEN,"")!!
+        return ApiKeyInterceptor(authToken)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNewsApi (interceptor: ApiKeyInterceptor) : NewsApiService{
         val httpClient = OkHttpClient.Builder()
             .callTimeout(360, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
@@ -33,8 +41,7 @@ object NetworkModule {
         dispatcher.maxRequests = 1
         dispatcher.maxRequestsPerHost = 1
         httpClient.dispatcher(dispatcher)
-        //hardcoded key
-        httpClient.addInterceptor(ApiKeyInterceptor("1a16811dd25348b891db420dc03bb8ad"))
+        httpClient.addInterceptor(interceptor)
         httpClient.addInterceptor(logInterceptor)
 
         return Retrofit.Builder()

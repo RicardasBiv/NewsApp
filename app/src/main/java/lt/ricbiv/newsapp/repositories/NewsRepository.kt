@@ -12,6 +12,6 @@ class NewsRepository @Inject constructor (private val service : NewsApiService) 
 
     suspend fun getTopArticles(country:String) : Resource<NewsResponse> {
         Log.d("GetTopArticles","Hit")
-        return safeApiCall { service.getTopHeadlines(country = country, category = null, sources = null, q = null, pageSize = 20, page = 1) }
+        return safeApiCall { service.getTopHeadlines(country = country, category = null, sources = null, q = null, pageSize = null, page = null) }
     }
 }

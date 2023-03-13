@@ -14,17 +14,33 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel() {
 
-    private val _popularArticles = MutableLiveData<Resource<NewsResponse>>()
-    val popularArticles: LiveData<Resource<NewsResponse>> get() = _popularArticles
+    private val _topArticles = MutableLiveData<Resource<NewsResponse>>(Resource.Loading())
+    val popularArticles: LiveData<Resource<NewsResponse>> = _topArticles
 
     init {
-        getPopularArticles()
+        getTopArticles()
+    }
+    private fun getTopArticles() {
+        viewModelScope.launch {
+            //Loading state
+            _topArticles.postValue(Resource.Loading())
+            _topArticles.postValue(newsRepository.getTopArticles("gb"))
+        }
     }
 
+    sealed class Action {
+        object GetArticles : Action()
+        object ChangeTheme : Action()
+    }
 
-    private fun getPopularArticles() = viewModelScope.launch {
-        _popularArticles.postValue(Resource.Loading())
+    fun runAction(action: Action){
+        when(action) {
+            is Action.GetArticles -> {
+                getTopArticles()
+            }
+            is Action.ChangeTheme ->{
 
-        _popularArticles.postValue(newsRepository.getTopArticles("gb"))
+            }
+        }
     }
 }

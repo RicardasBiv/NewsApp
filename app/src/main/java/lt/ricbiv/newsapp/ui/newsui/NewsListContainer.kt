@@ -11,30 +11,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lt.ricbiv.newsapp.api.Resource
 import lt.ricbiv.newsapp.api.responses.NewsResponse
+import lt.ricbiv.newsapp.models.Article
 import lt.ricbiv.newsapp.ui.theme.articleTitleStyle
-
 @Composable
 fun NewsListContainer(
+    navigateToArticle: (Article) -> Unit,
     response: Resource<NewsResponse>,
     retry: () -> Unit
 ) {
     Surface(
         color = MaterialTheme.colors.background,
-        shape = RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp),
+        shape = RoundedCornerShape(20.dp),
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 start = 10.dp,
                 end = 10.dp,
-                bottom = 50.dp
+                bottom = 10.dp
             )
     ) {
         when (response) {
             is Resource.Loading -> {
-                CircularLoader()
             }
             is Resource.Error -> {
                 ErrorView(
@@ -46,23 +47,12 @@ fun NewsListContainer(
             is Resource.Success -> {
                 if (response.data?.articles!!.isNotEmpty()) {
                     ArticleList(
-                        articles = response.data.articles
+                        articles = response.data.articles,
+                        navigateToArticle = navigateToArticle
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun CircularLoader() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colors.primary
-        )
     }
 }
 

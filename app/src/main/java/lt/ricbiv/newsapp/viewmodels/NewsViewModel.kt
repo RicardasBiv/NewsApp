@@ -24,7 +24,7 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         viewModelScope.launch {
             //Loading state
             _topArticles.postValue(Resource.Loading())
-            _topArticles.postValue(newsRepository.getTopArticles("gb"))
+            _topArticles.postValue(newsRepository.getTopArticles("business"))
         }
     }
 

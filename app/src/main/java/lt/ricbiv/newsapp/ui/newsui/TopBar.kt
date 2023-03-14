@@ -18,22 +18,17 @@ import androidx.compose.ui.unit.dp
 import lt.ricbiv.newsapp.ui.theme.barTitleStyle
 
 @Composable
-fun TopBar(@StringRes titleResource: Int, onThemeSwitch: () -> Unit) {
+fun TopBar(@StringRes titleResource: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+            modifier = Modifier.padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp),
             text = stringResource(id = titleResource),
             style = barTitleStyle
         )
-        Box(modifier = Modifier.padding(top = 24.dp, end = 8.dp)) {
-//            ThemeSwitcher(onThemeSwitch = {
-//                onThemeSwitch()
-//            })
-        }
     }
 }
 //@Composable

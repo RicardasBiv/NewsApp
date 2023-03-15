@@ -11,7 +11,6 @@ import javax.inject.Inject
 class NewsRepository @Inject constructor (private val service : NewsApiService) : BaseRepository() {
 
     suspend fun getTopArticles(category: String) : Resource<NewsResponse> {
-        Log.d("GetTopArticles","Hit")
         return safeApiCall { service.getTopHeadlines(country = "in", category = category, sources = null, q = null, pageSize = null, page = 1) }
     }
 }

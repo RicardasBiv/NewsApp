@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -38,7 +39,7 @@ fun NewsScreen(navController: NavController) {
             BodyContent(
                 newsResponseResource = articleList,
                 tryAgain = { viewModel.runAction(NewsViewModel.Action.GetArticles) },
-                navigateToArticle = { navigateToArticle(it) }
+                navigateToArticle = { navigateToArticle(it) },
             )
         }
     )

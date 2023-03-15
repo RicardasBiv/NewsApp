@@ -44,7 +44,7 @@ fun ArticleObject(article: Article, onClick: () -> Unit) {
                 )
                 HeightSpacer(value = 4.dp)
                 Text(
-                    text = article.publishedAt.substring(0, 10),
+                    text = article.publishedAt!!.substring(0, 10),
                     style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface)
                 )
             }

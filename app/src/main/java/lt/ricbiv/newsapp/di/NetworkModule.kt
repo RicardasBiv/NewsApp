@@ -24,8 +24,9 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAuthTokenInterceptor(prefs: SharedPreferences) :ApiKeyInterceptor{
-        val authToken = prefs.getString(Settings.AUTH_TOKEN,"")!!
+    fun provideAuthTokenInterceptor() :ApiKeyInterceptor{
+      //  val authToken = prefs.getString(Settings.AUTH_TOKEN,"")!!
+        val authToken = BuildConfig.API_KEY
         return ApiKeyInterceptor(authToken)
     }
 

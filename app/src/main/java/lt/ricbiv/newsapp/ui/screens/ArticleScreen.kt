@@ -1,13 +1,13 @@
 package lt.ricbiv.newsapp.ui.screens
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -33,99 +33,116 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun ArticleScreen(article: Article) {
 
     val context = LocalContext.current
     val isLight = MaterialTheme.colors.isLight
-    Column {
-        Row(
-            modifier = Modifier.padding(all = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            if (!article.urlToImage.isNullOrEmpty()) {
-                imageForArticle(
-                    url = article.urlToImage,
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.primary,
+    ) {
+        Column {
+            Row(
+                modifier = Modifier.padding(all = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                if (!article.urlToImage.isNullOrEmpty()) {
+                    imageForArticle(
+                        url = article.urlToImage,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .requiredHeight(250.dp)
+                    )
+                }
+            }
+            HeightSpacer(value = 4.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = article.title,
+                    textAlign = TextAlign.Center,
+                    style = articleTitleStyle.copy(color = MaterialTheme.colors.onSurface),
+                    maxLines = 3,
+                    fontStyle = FontStyle.Italic,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+            }
+            HeightSpacer(value = 4.dp)
+            if (article.description != null) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .requiredHeight(250.dp)
-                )
+                        .padding(all = 10.dp)
+                ) {
+                    Text(
+                        text = article.description,
+                        style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
+                        fontSize = 16.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-        }
-        HeightSpacer(value = 4.dp)
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = article.title,
-                textAlign = TextAlign.Center,
-                style = articleTitleStyle.copy(color = MaterialTheme.colors.onSurface),
-                maxLines = 3,
-                fontStyle = FontStyle.Italic,
-                overflow = TextOverflow.Ellipsis
-            )
+            if (article.author != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 5.dp), horizontalAlignment = Alignment.End
+                ) {
+                    Text(
+                        text = article.author,
+                        style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
+                        fontWeight = FontWeight.Bold
+                    )
 
-        }
-        HeightSpacer(value = 4.dp)
-        if(article.description != null) {
+                }
+            }
+            if(article.publishedAt != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 5.dp), horizontalAlignment = Alignment.End
+                ) {
+                    val parser = SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss'Z'")
+                    val formatter = SimpleDateFormat("yyyy-mm-dd HH:mm")
+                    val date = formatter.format(parser.parse(article.publishedAt)!!)
+                    Text(
+                        text = date,
+                        style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
+                        fontWeight = FontWeight.Bold
+                    )
+
+                }
+            }
+            WidthSpacer(value = 10.dp)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 10.dp)
             ) {
-                Text(
-                    text = article.description,
-                    style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
-                    fontSize = 16.sp,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 5.dp), horizontalAlignment = Alignment.End
-        ) {
-            Text(
-                text = article.author,
-                style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
-                fontWeight = FontWeight.Bold
-            )
+                Button(
+                    onClick = { OpenInternetBrowser.launch(context, article.url) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if(isLight) Color.White else MaterialTheme.colors.onSurface)
+                ) {
+                    Text(
+                        text = stringResource(id = lt.ricbiv.newsapp.R.string.read_full_article).uppercase(),
+                        color = if(isLight)MaterialTheme.colors.onSurface else Color.Black
+                    )
 
-        }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 5.dp), horizontalAlignment = Alignment.End
-            ) {
-                val parser = SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss'Z'")
-                val formatter = SimpleDateFormat("yyyy-mm-dd HH:mm")
-                val date = formatter.format(parser.parse(article.publishedAt))
-                Text(
-                    text = date ,
-                    style = normalTextStyle.copy(color = MaterialTheme.colors.onSurface),
-                    fontWeight = FontWeight.Bold
-                )
-
-            }
-
-        WidthSpacer(value = 10.dp)
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 10.dp)) {
-            Button(onClick = { OpenInternetBrowser.launch(context, article.url) }, modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(id = lt.ricbiv.newsapp.R.string.read_full_article).uppercase())
-                
+                }
             }
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

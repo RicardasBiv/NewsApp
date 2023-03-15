@@ -14,6 +14,9 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel() {
 
+    private val _isDarkTheme = MutableLiveData<Boolean>().apply { value = false }
+    val isDarkTheme: LiveData<Boolean> = _isDarkTheme
+
     private val _topArticles = MutableLiveData<Resource<NewsResponse>>(Resource.Loading())
     val popularArticles: LiveData<Resource<NewsResponse>> = _topArticles
 
@@ -39,7 +42,7 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
                 getTopArticles()
             }
             is Action.ChangeTheme ->{
-
+                _isDarkTheme.value = !_isDarkTheme.value!!
             }
         }
     }

@@ -31,19 +31,3 @@ fun TopBar(@StringRes titleResource: Int) {
         )
     }
 }
-//@Composable
-//fun ThemeSwitcher(onThemeSwitch: () -> Unit) {
-//    val isDark = remember { mutableStateOf(false) }
-//    @DrawableRes val light = R.drawable.ic_light
-//    @DrawableRes val dark = R.drawable.ic_dark
-//    IconButton(onClick = {
-//        onThemeSwitch()
-//        isDark.value = !isDark.value
-//    }) {
-//        Icon(
-//            painter = if (isDark.value) painterResource(light) else painterResource(dark),
-//            contentDescription = "Theme Switcher",
-//            tint = Color.White
-//        )
-//    }
-//}

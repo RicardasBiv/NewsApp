@@ -22,7 +22,6 @@ fun ArticleObject(article: Article, onClick: () -> Unit) {
             modifier = Modifier.padding(all = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Log.d("Debug","url: ${article.urlToImage}")
             Image(
                 url = article.urlToImage,
                 modifier = Modifier.requiredSize(100.dp)

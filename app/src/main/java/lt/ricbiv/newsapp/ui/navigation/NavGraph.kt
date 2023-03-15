@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.squareup.moshi.Moshi
+import lt.ricbiv.newsapp.MyApplication
 import lt.ricbiv.newsapp.models.Article
 import lt.ricbiv.newsapp.ui.newsui.NewsScreen
 import lt.ricbiv.newsapp.ui.screens.ArticleScreen

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
-    <string name="api_key">1a16811dd25348b891db420dc03bb8ad</string>
     <string name="top_Articles">Top Articles</string>
     <string name="retry">Retry</string>
     <string name="read_full_article">Read full article online</string>
